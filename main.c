@@ -1,3 +1,4 @@
+#include<ctype.h>
 #include<stdio.h>
 #include<stdlib.h>
 
@@ -16,7 +17,8 @@ enum checker {
 
 enum move_type {
     MOVE,
-    CAPTURE
+    CAPTURE,
+    ERROR
 };
 
 struct game {
@@ -26,6 +28,7 @@ struct game {
 };
 
 struct move {
+    enum move_type type;
     unsigned int length;
     unsigned int positions[MAX_MOVES];
 };
@@ -80,24 +83,29 @@ void print_game(struct game *b) {
     }
 }
 
-struct move *new_move(void) {
-    struct move *move = malloc(sizeof *move);
-    move->length = 0;
-    return move;
-}
-
 struct move *push_move(struct move *move, unsigned int position) {
     move->positions[move->length++] = position;
     return move;
 }
 
+struct move *new_move(int start, int next, enum move_type move_type) {
+    struct move *move = malloc(sizeof *move);
+    move->type = move_type;
+    move->length = 0;
+    push_move(move, start);
+    push_move(move, next);
+    return move;
+}
+
+/** Parse a PDN move into a data structure
+ * 
+ */
 struct move *parse_move(char *move) {
     unsigned int cursor = 0;
     unsigned int start, next;
     int bytes_read;
     char move_type_c;
-    enum move_type move_type;
-    struct move *parsed_move = new_move();
+    enum move_type move_type = ERROR;
 
     if (sscanf(move + cursor, "%u%c%u%n", &start, &move_type_c, &next, &bytes_read) < 3) {
         return NULL;
@@ -112,6 +120,7 @@ struct move *parse_move(char *move) {
             break;
     }
 
+    // Convert a PDN position into an index to an 8x8 2D array
     unsigned int start_i = start / 4;
     unsigned int start_j = 2*(start % 4) + (start_i + 1)%2;
     unsigned int start_index = 8 * start_i + start_j;
@@ -120,8 +129,11 @@ struct move *parse_move(char *move) {
     unsigned int next_j = 2*(next % 4) + (next_i + 1)%2;
     unsigned int next_index = 8 * next_i + next_j;
 
-    push_move(parsed_move, start_index);
-    push_move(parsed_move, next_index);
+    struct move *parsed_move = new_move(start_index, next_index, move_type);
+
+    if (move_type_c == '-') {
+        return parsed_move;
+    } 
 
     if (move_type == MOVE) return parsed_move; 
 
@@ -135,7 +147,14 @@ struct move *parse_move(char *move) {
         push_move(parsed_move, next_index);
     }
 
+    char eos = move[cursor + bytes_read];
+    if (eos != '\0' && !isspace(eos))  goto cleanup; 
+
     return parsed_move;
+cleanup:
+    free(parsed_move);
+
+    return NULL;
 }
 
 int execute_move(struct game *game, struct move *move) {
@@ -154,28 +173,47 @@ int execute_move(struct game *game, struct move *move) {
         return -1;
     }
 
+    int min_steps = 1;
+    int max_steps = 1;
+
+    if (move->type == CAPTURE) {
+        min_steps = 2;
+        max_steps = 2;
+    }
+    
+    if (piece == 'W' || piece == 'B') {
+        max_steps = 8;
+    }
+
     for (int i = 1; i < move->length; ++i) {
         int next_pos = move->positions[i];
 
-        int min_pos = next_pos < cur_pos ? next_pos : cur_pos;
-        int max_pos = next_pos > cur_pos ? next_pos : cur_pos;
-
         int direction;
-        if ((max_pos - min_pos)%7 == 0) {
+        if ((next_pos - cur_pos)%7 == 0) {
             // northeast direction
             direction = 7;
-        } else if ((max_pos - min_pos)%9 == 0) {
+        } else if ((next_pos - cur_pos)%9 == 0) {
             // northwest direction
             direction = 9;
         } else {
             return -1;
         }
 
-        int steps = (max_pos - min_pos) / direction;
-
-        for (int step = 0; step <= steps; ++step) {
-            game->board[min_pos + step*direction] = ' ';
+        int steps = (next_pos - cur_pos) / direction;
+        if (steps < 0) {
+            steps = -steps;
+            direction = -direction;
         }
+
+        if (steps < min_steps || steps > max_steps) return -1;
+
+        game->board[cur_pos] = ' ';
+        for (cur_pos += direction; cur_pos != next_pos; cur_pos += direction) {
+            if (move->type != CAPTURE && game->board[cur_pos] != ' ') break;
+            game->board[cur_pos] = ' ';
+        }
+
+        if (cur_pos != next_pos) return -1;
 
         cur_pos = next_pos;
     }
