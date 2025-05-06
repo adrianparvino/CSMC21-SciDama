@@ -220,6 +220,8 @@ int execute_move(struct game *game, struct move *move) {
 
     game->turn = game->turn == WHITE ? BLACK : WHITE;
     game->board[cur_pos] = piece;
+
+    return 0;
 }
 
 int execute_move_str(struct game *game, char *move) {
