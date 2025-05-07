@@ -12,8 +12,7 @@
 #define MAX_MOVES 64
 
 enum checker { WHITE, BLACK, EMPTY };
-
-enum move_type { MOVE, CAPTURE, ERROR };
+enum move_type { MOVE, CAPTURE, UNKNOWN };
 
 struct game {
     char board[64];
@@ -157,7 +156,7 @@ struct move *parse_move(char *move) {
     unsigned int start, next;
     int bytes_read;
     char move_type_c;
-    enum move_type move_type = ERROR;
+    enum move_type move_type = UNKNOWN;
 
     if (sscanf(
             move + cursor, "%u%c%u%n", &start, &move_type_c, &next, &bytes_read
