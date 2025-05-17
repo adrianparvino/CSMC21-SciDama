@@ -37,12 +37,10 @@ int index_to_pdn(int index) {
 }
 
 bool is_valid_position(int position) {
-    if (position < 0 || position >= 64)
-        return false;
+    if (position < 0 || position >= 64) return false;
 
     int i = position / 8;
     int j = position % 8;
 
     return (i % 2) != (j % 2);
 }
-

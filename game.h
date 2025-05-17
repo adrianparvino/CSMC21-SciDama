@@ -16,7 +16,6 @@ struct game {
 void init_game(struct game *b);
 void print_game(struct game *b);
 
-struct moves *find_captures(struct game *game);
 int execute_move(struct game *game, struct move *move);
 int execute_move_str(struct game *game, char *move);
 

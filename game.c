@@ -1,6 +1,6 @@
 #include "game.h"
-#include <string.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "move.h"
 #include "utils.h"
@@ -38,78 +38,12 @@ void print_game(struct game *b) {
     }
 }
 
-struct moves *find_captures(struct game *game) {
-    struct moves *list = NULL;
-
-    char *captures = game->turn == WHITE ? "bB" : "wW";
-
-    for (int i = 0; i < 8; ++i) {
-        for (int j = 0; j < 8; ++j) {
-            char piece = game->board[8 * i + j];
-
-            if (piece == ' ' || strchr(captures, piece))
-                continue;
-
-            bool promoted = strchr("BW", piece) != NULL;
-
-            int directions[] = {7, 9, -7, -9};
-
-            for (int k = 0; k < 4; ++k) {
-                int direction = directions[k];
-
-                int start = 8 * i + j;
-                int cursor;
-                for (cursor = start + direction; is_valid_position(cursor);
-                     cursor += direction) {
-                    if (game->board[cursor] != ' ') {
-                        break;
-                    }
-                }
-                if (!is_valid_position(cursor)) {
-                    continue;
-                }
-
-                if (!strchr(captures, game->board[cursor])) {
-                    continue;
-                }
-
-                for (cursor += direction; is_valid_position(cursor);
-                     cursor += direction) {
-                    int steps = (cursor - start) / direction;
-
-                    if (!promoted && steps != 2) {
-                        break;
-                    }
-
-                    if (game->board[cursor] != ' ') {
-                        break;
-                    }
-
-                    struct move *move = add_move(&list);
-                    init_move(move, start, cursor, CAPTURE);
-                }
-            }
-        }
-    }
-
-    return list;
-}
-
 int execute_move(struct game *game, struct move *move) {
     int cur_pos = move->positions[0];
     char piece = game->board[move->positions[0]];
 
-    if (piece == ' ') {
-        return -1;
-    }
-
-    if (game->turn == WHITE && (piece != 'w' && piece != 'W')) {
-        return -1;
-    }
-
-    if (game->turn == BLACK && (piece != 'b' && piece != 'B')) {
-        return -1;
-    }
+    char *own = game->turn == WHITE ? "wW" : "bB";
+    if (strchr(own, piece) == NULL) return -1;
 
     int min_steps = 1;
     int max_steps = 1;
@@ -119,7 +53,7 @@ int execute_move(struct game *game, struct move *move) {
         max_steps = 2;
     }
 
-    if (piece == 'W' || piece == 'B') {
+    if (strchr("BW", piece) != NULL) {
         max_steps = 8;
     }
 
@@ -147,18 +81,15 @@ int execute_move(struct game *game, struct move *move) {
             direction = -direction;
         }
 
-        if (steps < min_steps || steps > max_steps)
-            return -1;
+        if (steps < min_steps || steps > max_steps) return -1;
 
         game->board[cur_pos] = ' ';
         for (cur_pos += direction; cur_pos != next_pos; cur_pos += direction) {
-            if (move->type != CAPTURE && game->board[cur_pos] != ' ')
-                break;
+            if (move->type != CAPTURE && game->board[cur_pos] != ' ') break;
             game->board[cur_pos] = ' ';
         }
 
-        if (cur_pos != next_pos)
-            return -1;
+        if (cur_pos != next_pos) return -1;
 
         cur_pos = next_pos;
     }
@@ -168,4 +99,3 @@ int execute_move(struct game *game, struct move *move) {
 
     return 0;
 }
-
