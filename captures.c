@@ -61,13 +61,11 @@ bool find_captures_(
 
         if (!is_valid_position(cursor)) continue;
         if (!strchr(captures, game->board[cursor])) continue;
-        int j;
-        for (j = 0; j < sizeof(state->capture_set) / sizeof(*state->capture_set); ++j) {
-            if (state->capture_set[j] == cursor) {
-                break;
-            }
+        int capture_idx;
+        for (capture_idx = 0; capture_idx < sizeof(state->capture_set) / sizeof(*state->capture_set); ++capture_idx) {
+            if (state->capture_set[capture_idx] == cursor) break; 
         }
-        if (j != sizeof(state->capture_set) / sizeof(*state->capture_set)) {
+        if (capture_idx != sizeof(state->capture_set) / sizeof(*state->capture_set)) {
             continue;
         }
 
@@ -109,11 +107,9 @@ struct captures *find_captures(struct game *game) {
 
             if (!strchr(own, piece)) continue;
 
-            bool promoted = strchr("BW", piece) != NULL;
-
             struct state state;
             init_move(&state.move, start, CAPTURE);
-            state.promoted = promoted;
+            state.promoted = strchr("BW", piece) != NULL;
             state.captured = 0;
 
             find_captures_(game, &list, &state);
