@@ -9,14 +9,6 @@
 #include "move.h"
 #include "utils.h"
 
-int execute_move_str(struct game *game, char *move) {
-    struct move parsed_move;
-    if (!parse_move(move, &parsed_move)) return -1;
-
-    int retval = execute_move(game, &parsed_move);
-    return retval;
-}
-
 int main(void) {
     struct game game;
 
