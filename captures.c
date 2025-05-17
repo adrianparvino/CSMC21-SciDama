@@ -116,6 +116,26 @@ struct captures *find_captures(struct game *game) {
         }
     }
 
+    int max_length = 0;
+    for (struct captures *cursor = list; cursor != NULL; cursor = cursor->next) {
+        if (cursor->move.length > max_length) {
+            max_length = cursor->move.length;
+        }
+    }
+
+    struct captures **prev_next = &list;
+    struct captures *cursor = list;
+    while (cursor != NULL) {
+        if (cursor->move.length < max_length) {
+            *prev_next = cursor->next;
+            free(cursor);
+            cursor = *prev_next;
+        } else {
+            prev_next = &cursor->next;
+            cursor = cursor->next;
+        }
+    }
+
     return list;
 }
 
@@ -123,6 +143,7 @@ void print_captures(struct captures *captures) {
     for (int i = 1; captures != NULL; ++i) {
         printf("%d. ", i);
         print_move(&captures->move);
+        printf(" ");
         captures = captures->next;
     }
 }

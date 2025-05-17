@@ -13,10 +13,20 @@ int main(void) {
     struct game game;
 
     init_game(&game);
-    execute_move_str(&game, "9-14");
+
+    for (int i = 0; i < 64; ++i) {
+        game.board[i] = ' ';
+    }
+
+    game.board[28] = 'w';
+    game.board[37] = 'b';
+    game.board[35] = 'b';
+    game.board[33] = 'b';
+
+    // execute_move_str(&game, "9-14");
     // execute_move_str(&game, "21-17");
-    execute_move_str(&game, "24-19");
-    execute_move_str(&game, "10-15");
+    // execute_move_str(&game, "24-19");
+    // execute_move_str(&game, "10-15");
 
     bool last_invalid = false;
 
