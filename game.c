@@ -107,3 +107,14 @@ int execute_move_str(struct game *game, char *move) {
     int retval = execute_move(game, &parsed_move);
     return retval;
 }
+
+enum turn winner(struct game *game) {
+    // if (strchir(game->board, 'w') == NULL && strchr(game->board, 'W') == NULL) {
+    if (strpbrk(game->board, "wW") == NULL) {
+        return BLACK;
+    } else if (strpbrk(game->board, "bB") == NULL) {
+        return WHITE;
+    }
+
+    return NONE;
+}
