@@ -1,5 +1,7 @@
 
-SaiDama : Reverse checkers
+# SaiDama : Reverse checkers
+
+
 By Facurib, Fernandez, Ouano, Trazona
 
 ## PROJECT OVERVIEW
@@ -28,4 +30,4 @@ SciDama is an underrated checkers-like game. Instead of depleting the opponentâ€
 - Pointers
     - Pointer 
 - File manipulation
-    - File manipulation is used to read and write the leaderboards file, 
+    - File manipulation is used to read and write the leaderboards file
