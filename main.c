@@ -14,7 +14,7 @@ enum turn run_game_loop(struct game *game) {
     bool last_invalid = false;
 
     while (!feof(stdin)) {
-        // clear_screen();
+         clear_screen();
 
         if (last_invalid) {
             printf("Invalid move\n");
@@ -71,7 +71,7 @@ int main(void) {
 
     init_game(&game);
 
-    for (int i = 0; i < 64; ++i) {
+    /* for (int i = 0; i < 64; ++i) {
         game.board[i] = ' ';
     }
 
@@ -84,7 +84,7 @@ int main(void) {
     // execute_move_str(&game, "21-17");
     // execute_move_str(&game, "24-19");
     // execute_move_str(&game, "10-15");
-
+    */
     bool last_invalid = false;
 
     FILE *leaderboard_file = fopen("leaderboard.txt", "r+");
@@ -96,18 +96,48 @@ int main(void) {
     print_leaderboard(leaderboard);
 
     while (!feof(stdin)) {
-        enum turn winner = run_game_loop(&game);
+        int choice;
+        printf("----------------------------------------------------------------------------\n");
+        printf("*******       *       ******  *****           *       **      **       *\n");
+        printf("*******      ***      ******  *******        ***      ***    ***      ***\n");
+        printf("**          ** **       **    ***   **      ** **     ****  ****     ** **\n");
+        printf("*******    *** ***      **    ***   ***    *** ***    **********    *** ***\n");
+        printf("     **   *********     **    ***   ***   *********   **  *** **   *********\n");
+        printf("*******  ****   ****  ******  ********   ****   ****  **   *  **  ****   ****\n");
+        printf("*******  ***     *** ******  *******     ***     ***  **      **  ***     ***\n");
+        printf("------------------------------------------------------------------------------\n");
+        
+        printf("Welcome to SAI-DAMA!\n");
+        printf("What would you like to do?\n");
+        printf("1.Play game\n 2.View Leaderboards\n 3.Exit\n");
+        printf("---------------------------------------------\n");
+        printf("Enter Choice: ");
+        scanf("%d" ,&choice);
+        switch (choice){
+            case 1:
+            enum turn winner = run_game_loop(&game);
 
-        if (winner != NONE) {
-            printf("Congratulations %s! You won!\n", winner == WHITE ? "White" : "Black");
+            if (winner != NONE) {
+                printf("Congratulations %s! You won!\n", winner == WHITE ? "White" : "Black");
 
-            printf("Enter your name: ");
-            char name[4];
-            fgets(name, sizeof name, stdin);
-            add_leaderboard(leaderboard, name, 1);
-            dump_leaderboard(leaderboard, leaderboard_file);
+                printf("Enter your name: ");
+                char name[4];
+                fgets(name, sizeof name, stdin);
+                add_leaderboard(leaderboard, name, 1);
+                dump_leaderboard(leaderboard, leaderboard_file);
+                break;
+            case 2:
+                print_leaderboard(leaderboard);
+                int lead;
+                printf("---------------------\n");
+                printf("Enter 1 to go back, any other to exit");
+                scanf("%d" , &lead);
+                if(lead != 1) exit(1);
+            case 3:
+            exit(1);
             break;
         }
+    }
     }
 
     dump_leaderboard(leaderboard, leaderboard_file);
