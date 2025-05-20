@@ -109,7 +109,7 @@ int main(void) {
         
         printf("Welcome to SAI-DAMA!\n");
         printf("What would you like to do?\n");
-        printf("1.Play game\n 2.View Leaderboards\n 3.Exit\n");
+        printf("1.Play game\n2.View Leaderboards\n3.Exit\n");
         printf("---------------------------------------------\n");
         printf("Enter Choice: ");
         scanf("%d" ,&choice);
