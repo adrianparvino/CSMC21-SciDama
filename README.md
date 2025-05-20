@@ -63,4 +63,4 @@ saidama.exe
 - File manipulation
     - File manipulation is used to read and write the leaderboards file.
 - Linked list
-    - This implementation conserves the memory as it captures the game-state.
+    - Linked list is used to predict the capture moves in **find_captures**
