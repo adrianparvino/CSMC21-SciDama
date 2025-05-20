@@ -31,10 +31,11 @@ void print_game(struct game *b) {
     printf("[%s's turn]\n", b->turn == WHITE ? "White" : "Black");
 
     for (int i = 7; i >= 0; --i) {
+        printf("|");
         for (int j = 7; j >= 0; --j) {
             printf("%c", b->board[8 * i + j]);
         }
-        printf("\n");
+        printf("|\n");
     }
 }
 
