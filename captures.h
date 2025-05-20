@@ -1,11 +1,10 @@
 #ifndef CAPTURES_H
 #define CAPTURES_H
 
-#include "move.h"
 #include "game.h"
+#include "move.h"
 
-struct captures
-{
+struct captures {
     struct move move;
     struct captures *next;
 };

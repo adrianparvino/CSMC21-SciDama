@@ -3,14 +3,8 @@
 
 #define MAX_MOVES 64
 
-enum move_type
-{
-    MOVE,
-    CAPTURE,
-    UNKNOWN
-};
-struct move
-{
+enum move_type { MOVE, CAPTURE, UNKNOWN };
+struct move {
     enum move_type type;
     unsigned int length;
     unsigned int positions[MAX_MOVES];

@@ -18,7 +18,9 @@ struct leaderboard {
 struct leaderboard *load_leaderboard(FILE *file);
 void dump_leaderboard(struct leaderboard *leaderboard, FILE *file);
 
-struct leaderboard *add_leaderboard(struct leaderboard *leaderboard, char *name, unsigned int score);
+struct leaderboard *add_leaderboard(
+    struct leaderboard *leaderboard, char *name, unsigned int score
+);
 
 void print_leaderboard(struct leaderboard *leaderboard);
 

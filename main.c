@@ -6,15 +6,15 @@
 
 #include "captures.h"
 #include "game.h"
+#include "leaderboard.h"
 #include "move.h"
 #include "utils.h"
-#include "leaderboard.h"
 
 enum turn run_game_loop(struct game *game) {
     bool last_invalid = false;
 
     while (!feof(stdin)) {
-         clear_screen();
+        clear_screen();
 
         if (last_invalid) {
             printf("Invalid move\n");
@@ -32,7 +32,8 @@ enum turn run_game_loop(struct game *game) {
 
             int i;
             printf("Enter move: ");
-            if (!fgets(move, sizeof move, stdin) || sscanf(move, "%d", &i) != 1) {
+            if (!fgets(move, sizeof move, stdin) ||
+                sscanf(move, "%d", &i) != 1) {
                 last_invalid = true;
                 continue;
             }
@@ -62,7 +63,6 @@ enum turn run_game_loop(struct game *game) {
         if (winner_ != NONE) {
             return winner_;
         }
-
     }
 }
 
@@ -98,16 +98,34 @@ int main(void) {
     while (!feof(stdin)) {
         int choice;
         char buffer[100];
-        printf("----------------------------------------------------------------------------\n");
-        printf("*******       *       ******  *****           *       **      **       *\n");
-        printf("*******      ***      ******  *******        ***      ***    ***      ***\n");
-        printf("**          ** **       **    ***   **      ** **     ****  ****     ** **\n");
-        printf("*******    *** ***      **    ***   ***    *** ***    **********    *** ***\n");
-        printf("     **   *********     **    ***   ***   *********   **  *** **   *********\n");
-        printf("*******  ****   ****  ******  ********   ****   ****  **   *  **  ****   ****\n");
-        printf("*******  ***     *** ******  *******     ***     ***  **      **  ***     ***\n");
-        printf("------------------------------------------------------------------------------\n");
-        
+        printf(
+            "----------------------------------------------------------------------------\n"
+        );
+        printf(
+            "*******       *       ******  *****           *       **      **       *\n"
+        );
+        printf(
+            "*******      ***      ******  *******        ***      ***    ***      ***\n"
+        );
+        printf(
+            "**          ** **       **    ***   **      ** **     ****  ****     ** **\n"
+        );
+        printf(
+            "*******    *** ***      **    ***   ***    *** ***    **********    *** ***\n"
+        );
+        printf(
+            "     **   *********     **    ***   ***   *********   **  *** **   *********\n"
+        );
+        printf(
+            "*******  ****   ****  ******  ********   ****   ****  **   *  **  ****   ****\n"
+        );
+        printf(
+            "*******  ***     *** ******  *******     ***     ***  **      **  ***     ***\n"
+        );
+        printf(
+            "------------------------------------------------------------------------------\n"
+        );
+
         printf("Welcome to SAI-DAMA!\n");
         printf("What would you like to do?\n");
         printf("1.Play game\n");
@@ -116,13 +134,16 @@ int main(void) {
         printf("---------------------------------------------\n");
         printf("Enter Choice: ");
         fgets(buffer, sizeof buffer, stdin);
-        sscanf(buffer, "%d" ,&choice);
+        sscanf(buffer, "%d", &choice);
         switch (choice) {
-            case 1:
+        case 1:
             enum turn winner = run_game_loop(&game);
 
             if (winner != NONE) {
-                printf("Congratulations %s! You won!\n", winner == WHITE ? "White" : "Black");
+                printf(
+                    "Congratulations %s! You won!\n",
+                    winner == WHITE ? "White" : "Black"
+                );
 
                 printf("Enter your name: ");
                 char name[4];
@@ -131,16 +152,16 @@ int main(void) {
                 dump_leaderboard(leaderboard, leaderboard_file);
             }
             break;
-            case 2:
-                print_leaderboard(leaderboard);
-                int lead;
-                printf("---------------------\n");
-                printf("Enter 1 to go back, any other to exit");
-                fgets(buffer, sizeof buffer, stdin);
-                sscanf(buffer, "%d" , &lead);
-                if(lead != 1) exit(1);
-                continue;
-            case 3:
+        case 2:
+            print_leaderboard(leaderboard);
+            int lead;
+            printf("---------------------\n");
+            printf("Enter 1 to go back, any other to exit");
+            fgets(buffer, sizeof buffer, stdin);
+            sscanf(buffer, "%d", &lead);
+            if (lead != 1) exit(1);
+            continue;
+        case 3:
             exit(1);
             break;
         }
