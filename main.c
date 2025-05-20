@@ -90,11 +90,11 @@ int main(void) {
 
     init_game(&game);
 
-    for (int i = 0; i < 64; ++i) {
-        game.board[i] = ' ';
-    }
-    game.board[49] = 'w';
-    game.board[8] = 'b';
+    // for (int i = 0; i < 64; ++i) {
+    //     game.board[i] = ' ';
+    // }
+    // game.board[49] = 'w';
+    // game.board[8] = 'b';
 
     // game.board[28] = 'w';
     // // game.board[37] = 'b';
