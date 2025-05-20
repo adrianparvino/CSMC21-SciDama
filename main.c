@@ -145,15 +145,18 @@ int main(void) {
             enum turn winner = run_game_loop(&game);
 
             if (winner != NONE) {
+                clear_screen();
+                print_game(&game);
+
                 printf(
                     "Congratulations %s! You won!\n",
                     winner == WHITE ? "White" : "Black"
                 );
 
                 printf("Enter your name: ");
-                char name[10];
+                char name[100];
                 fgets(name, sizeof name, stdin);
-                add_leaderboard(leaderboard, name, 1);
+                add_leaderboard(leaderboard, strtok(name, "\n"), 1);
                 dump_leaderboard(leaderboard, leaderboard_file);
 
                 exit(0);
