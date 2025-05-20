@@ -109,11 +109,13 @@ int main(void) {
         
         printf("Welcome to SAI-DAMA!\n");
         printf("What would you like to do?\n");
-        printf("1.Play game\n2.View Leaderboards\n3.Exit\n");
+        printf("1.Play game\n");
+        printf("2.View Leaderboards\n");
+        printf("3.Exit\n");
         printf("---------------------------------------------\n");
         printf("Enter Choice: ");
         scanf("%d" ,&choice);
-        switch (choice){
+        switch (choice) {
             case 1:
             enum turn winner = run_game_loop(&game);
 
@@ -125,7 +127,8 @@ int main(void) {
                 fgets(name, sizeof name, stdin);
                 add_leaderboard(leaderboard, name, 1);
                 dump_leaderboard(leaderboard, leaderboard_file);
-                break;
+            }
+            break;
             case 2:
                 print_leaderboard(leaderboard);
                 int lead;
@@ -137,7 +140,6 @@ int main(void) {
             exit(1);
             break;
         }
-    }
     }
 
     dump_leaderboard(leaderboard, leaderboard_file);
