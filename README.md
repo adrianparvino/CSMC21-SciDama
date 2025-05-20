@@ -18,7 +18,11 @@ SciDama is an underrated checkers-like game. Instead of depleting the opponentâ€
 
 ## RULES AND MECHANICS
 
-1. SaiDama is a game where the winner is the one who 
+1. The first player to start the game and initiate a move will be the one who picks the white chips, which will be decided by the two players. 
+2. Any invalid input will be discarded. In particular, the program will keep on asking the user for another input until the input is right.
+3. The winner of the game is the first player to have all its chips consumed by the opponent. 
+4. Consequently, the winning player will earn a placement in the leaderboard after the game.
+
 
 ## HOW TO COMPILE/RUN THE PROGRAM
 ### Compiling
@@ -37,6 +41,10 @@ saidama.exe
 ```sh
 ./saidama
 ```
+#### Gameplay
+1. In performing a move, the player chooses the chip based on its coordinate appended by a '-', which is followed by its intended place. For instance: *6-9 implies that the chip on the 6th position will be moved to the 9th position as shown in the diagram below.*
+2.
+
 
 
 ## SAMPLE INPUT/OUTPUT
@@ -44,13 +52,15 @@ saidama.exe
 
 ## CONCEPTS
 - Arrays 
-    - The chessboard is stored on a single row array with **64** elements
-    - The chessboard is printed by line, which makes it look like a **2D-multidimensional** array
+    - The chessboard is stored in a single row array with **64** elements.
+    - The chessboard is printed by line, which appears to be a **2D-multidimensional** array.
 - Functions
-    - Functions such as **print_leader** & **run_game_loop** were implemented for the algorithm of the game
-- Pointers
-    - Pointers serve as the building block of the program. The structures are passed to a function as a pointer
+    - Functions, such as **print_leader** & **run_game_loop**, were implemented for the algorithm of the game
+- Pointers 
+    - Structures serve as pointers that are passed to a function.
+- Structures
+    - They are particularly useful in the movement of the chips, in parsing these movements, and in preserving the game-state.
 - File manipulation
-    - File manipulation is used to read and write the leaderboards file
+    - File manipulation is used to read and write the leaderboards file.
 - Linked list
-    -
+    - This implementation conserves the memory as it captures the game-state.
