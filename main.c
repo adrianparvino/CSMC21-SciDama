@@ -97,6 +97,7 @@ int main(void) {
 
     while (!feof(stdin)) {
         int choice;
+        char buffer[100];
         printf("----------------------------------------------------------------------------\n");
         printf("*******       *       ******  *****           *       **      **       *\n");
         printf("*******      ***      ******  *******        ***      ***    ***      ***\n");
@@ -114,7 +115,8 @@ int main(void) {
         printf("3.Exit\n");
         printf("---------------------------------------------\n");
         printf("Enter Choice: ");
-        scanf("%d" ,&choice);
+        fgets(buffer, sizeof buffer, stdin);
+        sscanf(buffer, "%d" ,&choice);
         switch (choice) {
             case 1:
             enum turn winner = run_game_loop(&game);
@@ -134,8 +136,10 @@ int main(void) {
                 int lead;
                 printf("---------------------\n");
                 printf("Enter 1 to go back, any other to exit");
-                scanf("%d" , &lead);
+                fgets(buffer, sizeof buffer, stdin);
+                sscanf(buffer, "%d" , &lead);
                 if(lead != 1) exit(1);
+                continue;
             case 3:
             exit(1);
             break;
