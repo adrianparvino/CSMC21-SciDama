@@ -16,6 +16,21 @@ SciDama is an underrated checkers-like game. Instead of depleting the opponentâ€
 - Leaderboards
 
 ## HOW TO COMPILE/RUN THE PROGRAM
+### Compiling
+```sh
+gcc main.c captures.c game.c leaderboard.c move.c utils.c -o saidama
+```
+
+### Running
+#### Windows
+```cmd
+saidama.exe
+```
+
+#### Linux:
+```sh
+./saidama
+```
 
 
 ## SAMPLE INPUT/OUTPUT
