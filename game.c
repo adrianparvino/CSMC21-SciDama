@@ -31,14 +31,41 @@ void print_game(struct game *b) {
     printf("[%s's turn]\n", b->turn == WHITE ? "White" : "Black");
 
     for (int i = 7; i >= 0; --i) {
-        printf("   +------------------------+\n");
-        printf("%2d |", 4*i + 1);
+        // printf("   +------------------------+\n");
+        // printf("   \033[7m                          \033[0m\n");
+        // printf("%2d |", 4*i + 4);
+        printf("    ");
         for (int j = 7; j >= 0; --j) {
-            printf(" %c ", b->board[8 * i + j]);
+            char piece = b->board[8 * i + j];
+            if (piece == ' ' && !is_valid_position(8 * i + j)) {
+                printf("\033[7m       \033[0m");
+            } else {
+                printf("       ");
+            }
         }
-        printf("|\n");
+        printf("\n");
+        printf("%2d  ", 4*i + 4);
+        for (int j = 7; j >= 0; --j) {
+            char piece = b->board[8 * i + j];
+            if (piece == ' ' && !is_valid_position(8 * i + j)) {
+                printf("\033[7m       \033[0m");
+            } else {
+                printf("   %c   ", piece);
+            }
+        }
+        printf("  %2d\n", 4*i + 1);
+        printf("    ");
+        for (int j = 7; j >= 0; --j) {
+            char piece = b->board[8 * i + j];
+            if (piece == ' ' && !is_valid_position(8 * i + j)) {
+                printf("\033[7m       \033[0m");
+            } else {
+                printf("       ");
+            }
+        }
+        printf("\n");
     }
-    printf("   +------------------------+\n");
+    // printf("   +------------------------+\n");
 }
 
 int execute_move(struct game *game, struct move *move) {
