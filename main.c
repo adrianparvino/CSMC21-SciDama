@@ -10,6 +10,23 @@
 #include "move.h"
 #include "utils.h"
 
+struct leaderboard *leaderboard = NULL;
+FILE *leaderboard_file = NULL;
+
+void dump_on_exit(void) {
+    if (leaderboard && leaderboard_file) {
+        dump_leaderboard(leaderboard, leaderboard_file);
+    }
+
+    if (leaderboard_file) {
+        fclose(leaderboard_file);
+    }
+
+    if (leaderboard) {
+        cleanup_leaderboard(leaderboard);
+    }
+}
+
 enum turn run_game_loop(struct game *game) {
     bool last_invalid = false;
 
@@ -69,31 +86,35 @@ enum turn run_game_loop(struct game *game) {
 int main(void) {
     struct game game;
 
+    atexit(dump_on_exit);
+
     init_game(&game);
 
-    /* for (int i = 0; i < 64; ++i) {
+    for (int i = 0; i < 64; ++i) {
         game.board[i] = ' ';
     }
+    game.board[49] = 'w';
+    game.board[8] = 'b';
 
-    game.board[28] = 'w';
-    // game.board[37] = 'b';
-    game.board[35] = 'b';
-    game.board[33] = 'b';
+    // game.board[28] = 'w';
+    // // game.board[37] = 'b';
+    // game.board[35] = 'b';
+    // game.board[33] = 'b';
 
     // execute_move_str(&game, "9-14");
     // execute_move_str(&game, "21-17");
     // execute_move_str(&game, "24-19");
     // execute_move_str(&game, "10-15");
-    */
+
     bool last_invalid = false;
 
-    FILE *leaderboard_file = fopen("leaderboard.txt", "r+");
+    leaderboard_file = fopen("leaderboard.txt", "r+");
     if (leaderboard_file == NULL) {
         leaderboard_file = fopen("leaderboard.txt", "w+");
     }
-    struct leaderboard *leaderboard = load_leaderboard(leaderboard_file);
+    leaderboard = load_leaderboard(leaderboard_file);
 
-    print_leaderboard(leaderboard);
+    // print_leaderboard(leaderboard);
 
     while (!feof(stdin)) {
         int choice;
@@ -130,10 +151,12 @@ int main(void) {
                 );
 
                 printf("Enter your name: ");
-                char name[4];
+                char name[10];
                 fgets(name, sizeof name, stdin);
                 add_leaderboard(leaderboard, name, 1);
                 dump_leaderboard(leaderboard, leaderboard_file);
+
+                exit(0);
             }
             break;
         case 2:
@@ -150,10 +173,6 @@ int main(void) {
             break;
         }
     }
-
-    dump_leaderboard(leaderboard, leaderboard_file);
-    cleanup_leaderboard(leaderboard);
-    fclose(leaderboard_file);
 
     return 0;
 }
