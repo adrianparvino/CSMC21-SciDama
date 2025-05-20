@@ -103,8 +103,15 @@ int execute_move(struct game *game, struct move *move) {
         cur_pos = next_pos;
     }
 
-    game->turn = game->turn == WHITE ? BLACK : WHITE;
     game->board[cur_pos] = piece;
+
+    if (game->turn == WHITE && (cur_pos >= 56 && cur_pos < 64)) {
+        game->board[cur_pos] = 'W';
+    } else if (game->turn == BLACK && (cur_pos >= 0 && cur_pos < 8)) {
+        game->board[cur_pos] = 'B';
+    }
+
+    game->turn = game->turn == WHITE ? BLACK : WHITE;
 
     return 0;
 }
