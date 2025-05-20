@@ -45,6 +45,8 @@ int execute_move(struct game *game, struct move *move) {
     char *own = game->turn == WHITE ? "wW" : "bB";
     if (strchr(own, piece) == NULL) return -1;
 
+    bool promoted = strchr("WB", piece) != NULL;
+
     int min_steps = 1;
     int max_steps = 1;
 
@@ -80,6 +82,13 @@ int execute_move(struct game *game, struct move *move) {
             steps = -steps;
             direction = -direction;
         }
+
+        if (!promoted && game->turn == WHITE && direction < 0 &&
+            move->type != CAPTURE)
+            return -1;
+        if (!promoted && game->turn == BLACK && direction > 0 &&
+            move->type != CAPTURE)
+            return -1;
 
         if (steps < min_steps || steps > max_steps) return -1;
 
