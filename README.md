@@ -45,17 +45,18 @@ saidama.exe
 ```
 #### Gameplay
 - Take note of the following board
-<div style="text-align:center">
 
-![board](pdn.gif)
+<div style="text-align: center;">
+
+<img src="images/pdn.gif" width="200">
 
 </div>
 
 1. The Title Screen as shown below will give you three choices, to **start the game, view the leaderboards, and exit**. The user may freely choose which one would they like to do while the title screen is up.
 
-<div style="text-align:center">
+<div style="text-align: center;">
 
-![title](title.png)
+<img src="images/title.png" width=75%>
 
 </div>
 
@@ -69,6 +70,29 @@ saidama.exe
 
 ## SAMPLE INPUT/OUTPUT
 
+# Title Screen
+<div style="text-align: center;">
+
+<img src="images/title.png" width=100%>
+
+</div>
+
+# Scenario 1 : Moving and Capturing
+<div style="text-align: center;">
+
+<img src="images/sc1.png" width=30%><img src="images/sc2.png" width=30%>
+
+<img src="images/sc3.png" width=30%><img src="images/sc4.png" width=30%>
+
+</div>
+
+# Scenario 2: Winning and Adding name to leaderboards 
+<div style="text-align: center;">
+
+<img src="images/sc1-1.png" width=40.5%><img src="images/sc1-2.png" width=40%>
+
+<img src="images/sc1-3.png" width=100%>
+</div>
 
 ## CONCEPTS
 - Arrays 

@@ -119,6 +119,7 @@ int main(void) {
     while (!feof(stdin)) {
         int choice;
         char buffer[100];
+        clear_screen();
         printf(
             "----------------------------------------------------------------------------\n"
             "*******       *       ******  *****           *       **      **       *\n"
@@ -172,7 +173,7 @@ int main(void) {
             print_leaderboard(leaderboard);
             int lead;
             printf("---------------------\n");
-            printf("Enter 1 to go back, any other to exit");
+            printf("Enter 1 to go back, any other to exit ");
             fgets(buffer, sizeof buffer, stdin);
             sscanf(buffer, "%d", &lead);
             if (lead != 1) exit(1);
