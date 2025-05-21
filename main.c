@@ -131,15 +131,18 @@ int main(void) {
             "------------------------------------------------------------------------------\n"
         );
 
-        printf("Welcome to SAI-DAMA!\n");
-        printf("What would you like to do?\n");
-        printf("1. Play game\n"
-               "2. View leaderboards\n"
-               "3. Exit\n");
-        printf("---------------------------------------------\n");
-        printf("Enter Choice: ");
-        fgets(buffer, sizeof buffer, stdin);
-        sscanf(buffer, "%d", &choice);
+        do {
+            printf("Welcome to SAI-DAMA!\n");
+            printf("What would you like to do?\n");
+            printf("1. Play game\n"
+                   "2. View leaderboards\n"
+                   "3. Exit\n");
+            printf("---------------------------------------------\n");
+            printf("Enter Choice: ");
+
+            fgets(buffer, sizeof buffer, stdin);
+        }
+        while (sscanf(buffer, "%d", &choice) < 1);
         switch (choice) {
         case 1:
             enum turn winner = run_game_loop(&game);
@@ -153,13 +156,16 @@ int main(void) {
                     winner == WHITE ? "White" : "Black"
                 );
 
-                printf("Enter your name: ");
                 char name[100];
-                fgets(name, sizeof name, stdin);
-                add_leaderboard(leaderboard, strtok(name, "\n"), 1);
+                char *name_;
+                do {
+                    printf("Enter your name: ");
+                    fgets(name, sizeof name, stdin);
+                } while ((name_ = strtok(name, "\n")) == NULL);
+                add_leaderboard(leaderboard, name_, 1);
                 dump_leaderboard(leaderboard, leaderboard_file);
 
-                exit(0);
+                init_game(&game);
             }
             break;
         case 2:
