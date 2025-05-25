@@ -1,3 +1,7 @@
+---
+graphics: yes
+geometry: margin=1in
+---
 
 # SaiDama : Reverse checkers
 
@@ -5,10 +9,7 @@
 By Facurib, Fernandez, Ouano, Trazona
 
 ## PROJECT OVERVIEW
-
-<p style="text-align:justify">
 SciDama is an underrated checkers-like game. Instead of depleting the opponent’s chips, your aim is to deplete your chips. It is a game where the fewer chips you have, the more chances you have at winning a round. This program aims to make the Filipino SaiDama board game playable on a computer, as well as to popularize the game.
-</p>
 
 ## FEATURES
 
@@ -43,22 +44,15 @@ saidama.exe
 ```sh
 ./saidama
 ```
+
 #### Gameplay
 - Take note of the following board
 
-<div style="text-align: center;">
-
-<img src="images/pdn.gif" width="200">
-
-</div>
+\begin{figure}[H]\includegraphics[width=0.4\textwidth, height=!]{images/pdn.png}\centering\end{figure}
 
 1. The Title Screen as shown below will give you three choices, to **start the game, view the leaderboards, and exit**. The user may freely choose which one would they like to do while the title screen is up.
 
-<div style="text-align: center;">
-
-<img src="images/title.png" width=75%>
-
-</div>
+\begin{figure}[H]\includegraphics[width=0.9\textwidth, height=!]{images/title.png}\centering\end{figure}
 
 2. The white player has chips **w** or **W** depending if the chip is promoted. The black player also has chips **b** and **B**, respectfully.
 3. When performing a move, the player in turn chooses the chip based on its coordinate appended by a '-', which is followed by its intended place. For instance: the move/input **6-9** implies that the chip on the 6th position will be moved to the 9th position as shown in the diagram below.
@@ -71,35 +65,37 @@ saidama.exe
 ## SAMPLE INPUT/OUTPUT
 
 # Title Screen
-<div style="text-align: center;">
-
-<img src="images/title.png" width=100%>
-
-</div>
+\begin{figure}[H]\includegraphics[width=0.9\textwidth, height=!]{images/title.png}\centering\end{figure}
 
 # Scenario 1 : Moving and Capturing
-<div style="text-align: center;">
-
-<img src="images/sc1.png" width=30%><img src="images/sc2.png" width=30%>
-
-<img src="images/sc3.png" width=30%><img src="images/sc4.png" width=30%>
-
-</div>
+<!-- \begin{figure}[H]\includegraphics[width=0.3\textwidth, height=!]{images/sc2.png}\centering\end{figure}
+\begin{figure}[H]\includegraphics[width=0.3\textwidth, height=!]{images/sc4.png}\centering\end{figure} -->
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.45\textwidth]{images/sc2.png}
+\includegraphics[width=0.45\textwidth]{images/sc4.png}
+\end{figure}
 
 # Scenario 2: Winning and Adding name to leaderboards 
-<div style="text-align: center;">
-
-<img src="images/sc1-1.png" width=40.5%><img src="images/sc1-2.png" width=40%>
-
-<img src="images/sc1-3.png" width=100%>
-</div>
+<!-- \begin{figure}[H]\includegraphics[width=0.25\textwidth, height=!]{images/sc1-1.png}\centering\end{figure}
+\begin{figure}[H]\includegraphics[width=0.25\textwidth, height=!]{images/sc1-2.png}\centering\end{figure}
+\begin{figure}[H]\includegraphics[width=0.25\textwidth, height=!]{images/sc1-3.png}\centering\end{figure} -->
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.45\textwidth]{images/sc1-1.png}
+\includegraphics[width=0.45\textwidth]{images/sc1-2.png}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{images/sc1-3.png}
+\end{figure}
 
 ## CONCEPTS
 - Arrays 
     - The chessboard is stored in a single row array with **64** elements.
     - The chessboard is printed by line, which appears to be a **2D-multidimensional** array.
 - Functions
-    - Functions, such as **print_leader** & **run_game_loop**, were implemented for the algorithm of the game
+    - Functions, such as `print_leader` & `run_game_loop`, were implemented for the algorithm of the game
 - Pointers 
     - Structures serve as pointers that are passed to a function.
 - Structures
@@ -107,4 +103,9 @@ saidama.exe
 - File manipulation
     - File manipulation is used to read and write the leaderboards file.
 - Linked list
-    - Linked lists are used to predict the capture moves in **find_captures**
+    - Linked lists are used to predict the capture moves in `find_captures`
+
+## Regenerate the PDF documentation
+```sh
+pandoc --include-in-header header.tex README.md -o README.pdf
+```
