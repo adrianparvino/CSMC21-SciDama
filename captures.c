@@ -78,7 +78,7 @@ bool find_captures_(
              cursor += direction, ++steps) {
 
             if (!state->promoted && steps != 2) break;
-            if (game->board[cursor] != ' ') continue;
+            if (game->board[cursor] != ' ') break;
 
             added = true;
 
