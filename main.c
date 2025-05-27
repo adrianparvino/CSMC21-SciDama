@@ -27,6 +27,45 @@ void dump_on_exit(void) {
     }
 }
 
+int prompt_title_screen() {
+    bool last_invalid = false;
+
+    for (;;) {
+        int choice;
+        char buffer[100];
+        clear_screen();
+
+        printf(
+            "-----------------------------------------------------------------------------\n"
+            "*******       *       ******  *****           *       **      **       *     \n"
+            "*******      ***      ******  *******        ***      ***    ***      ***    \n"
+            "**          ** **       **    ***   **      ** **     ****  ****     ** **   \n"
+            "*******    *** ***      **    ***   ***    *** ***    **********    *** ***  \n"
+            "     **   *********     **    ***   ***   *********   **  *** **   ********* \n"
+            "*******  ****   ****  ******  ********   ****   ****  **   *  **  ****   ****\n"
+            "*******  ***     *** ******  *******     ***     ***  **      **  ***     ***\n"
+            "-----------------------------------------------------------------------------\n"
+        );
+
+        if (last_invalid) printf("Invalid choice\n");
+
+        printf("Welcome to SAI-DAMA!\n");
+        printf("What would you like to do?\n");
+        printf("1. Play game\n"
+               "2. View leaderboards\n"
+               "3. Exit\n");
+        printf("---------------------------------------------\n");
+        printf("Enter Choice: ");
+
+        fgets(buffer, sizeof buffer, stdin);
+
+        if (sscanf(buffer, "%d", &choice) == 1 && choice >= 1 && choice <= 3)
+            return choice;
+
+        last_invalid = true;
+    }
+}
+
 enum turn run_game_loop(struct game *game) {
     bool last_invalid = false;
 
@@ -100,32 +139,8 @@ int main(void) {
     leaderboard = load_leaderboard(leaderboard_file);
 
     while (!feof(stdin)) {
-        int choice;
         char buffer[100];
-        clear_screen();
-        printf(
-            "-----------------------------------------------------------------------------\n"
-            "*******       *       ******  *****           *       **      **       *     \n"
-            "*******      ***      ******  *******        ***      ***    ***      ***    \n"
-            "**          ** **       **    ***   **      ** **     ****  ****     ** **   \n"
-            "*******    *** ***      **    ***   ***    *** ***    **********    *** ***  \n"
-            "     **   *********     **    ***   ***   *********   **  *** **   ********* \n"
-            "*******  ****   ****  ******  ********   ****   ****  **   *  **  ****   ****\n"
-            "*******  ***     *** ******  *******     ***     ***  **      **  ***     ***\n"
-            "-----------------------------------------------------------------------------\n"
-        );
-
-        do {
-            printf("Welcome to SAI-DAMA!\n");
-            printf("What would you like to do?\n");
-            printf("1. Play game\n"
-                   "2. View leaderboards\n"
-                   "3. Exit\n");
-            printf("---------------------------------------------\n");
-            printf("Enter Choice: ");
-
-            fgets(buffer, sizeof buffer, stdin);
-        } while (sscanf(buffer, "%d", &choice) < 1 || choice < 1 || choice > 3);
+        int choice = prompt_title_screen();
 
         switch (choice) {
         case 1:
