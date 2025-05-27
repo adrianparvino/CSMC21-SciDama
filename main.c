@@ -90,22 +90,6 @@ int main(void) {
 
     init_game(&game);
 
-    // for (int i = 0; i < 64; ++i) {
-    //     game.board[i] = ' ';
-    // }
-    // game.board[49] = 'w';
-    // game.board[8] = 'b';
-
-    // game.board[28] = 'w';
-    // // game.board[37] = 'b';
-    // game.board[35] = 'b';
-    // game.board[33] = 'b';
-
-    // execute_move_str(&game, "9-14");
-    // execute_move_str(&game, "21-17");
-    // execute_move_str(&game, "24-19");
-    // execute_move_str(&game, "10-15");
-
     bool last_invalid = false;
 
     leaderboard_file = fopen("leaderboard.txt", "r+");
@@ -114,22 +98,20 @@ int main(void) {
     }
     leaderboard = load_leaderboard(leaderboard_file);
 
-    // print_leaderboard(leaderboard);
-
     while (!feof(stdin)) {
         int choice;
         char buffer[100];
         clear_screen();
         printf(
-            "----------------------------------------------------------------------------\n"
-            "*******       *       ******  *****           *       **      **       *\n"
-            "*******      ***      ******  *******        ***      ***    ***      ***\n"
-            "**          ** **       **    ***   **      ** **     ****  ****     ** **\n"
-            "*******    *** ***      **    ***   ***    *** ***    **********    *** ***\n"
-            "     **   *********     **    ***   ***   *********   **  *** **   *********\n"
+            "-----------------------------------------------------------------------------\n"
+            "*******       *       ******  *****           *       **      **       *     \n"
+            "*******      ***      ******  *******        ***      ***    ***      ***    \n"
+            "**          ** **       **    ***   **      ** **     ****  ****     ** **   \n"
+            "*******    *** ***      **    ***   ***    *** ***    **********    *** ***  \n"
+            "     **   *********     **    ***   ***   *********   **  *** **   ********* \n"
             "*******  ****   ****  ******  ********   ****   ****  **   *  **  ****   ****\n"
-            "*******  ***     ***  ******  *******    ***     ***  **      **  ***     ***\n"
-            "------------------------------------------------------------------------------\n"
+            "*******  ***     *** ******  *******     ***     ***  **      **  ***     ***\n"
+            "-----------------------------------------------------------------------------\n"
         );
 
         do {
@@ -142,8 +124,7 @@ int main(void) {
             printf("Enter Choice: ");
 
             fgets(buffer, sizeof buffer, stdin);
-        }
-        while (sscanf(buffer, "%d", &choice) < 1);
+        } while (sscanf(buffer, "%d", &choice) < 1);
         switch (choice) {
         case 1:
             enum turn winner = run_game_loop(&game);
