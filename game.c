@@ -65,7 +65,8 @@ void print_game(struct game *b) {
 }
 
 int execute_move_(
-    struct game *game, struct move *move, int min_steps, int max_steps, char *own, char piece, bool promoted, int index
+    struct game *game, struct move *move, int min_steps, int max_steps,
+    char *own, char piece, bool promoted, int index
 ) {
     if (index >= move->length) return 0;
 
@@ -109,7 +110,10 @@ int execute_move_(
     }
     if (game->board[next_pos] != ' ') return -1;
 
-    if (execute_move_(game, move, min_steps, max_steps, own, piece, promoted, index + 1) < 0) return -1;
+    if (execute_move_(
+            game, move, min_steps, max_steps, own, piece, promoted, index + 1
+        ) < 0)
+        return -1;
 
     game->board[cur_pos] = ' ';
     for (cur_pos += direction; cur_pos != next_pos; cur_pos += direction) {
@@ -151,7 +155,9 @@ int execute_move(struct game *game, struct move *move) {
         max_steps = 8;
     }
 
-    return execute_move_(game, move, min_steps, max_steps, own, piece, promoted, 1);
+    return execute_move_(
+        game, move, min_steps, max_steps, own, piece, promoted, 1
+    );
 }
 
 int execute_move_str(struct game *game, char *move) {
