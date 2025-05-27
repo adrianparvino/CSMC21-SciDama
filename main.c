@@ -62,6 +62,7 @@ enum turn run_game_loop(struct game *game) {
 
             if (c == NULL) {
                 last_invalid = true;
+                continue;
             }
 
             execute_move(game, &c->move);
