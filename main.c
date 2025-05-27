@@ -29,6 +29,7 @@ void dump_on_exit(void) {
 
 int prompt_title_screen() {
     bool last_invalid = false;
+    int bytes_read;
 
     for (;;) {
         int choice;
@@ -59,7 +60,7 @@ int prompt_title_screen() {
 
         fgets(buffer, sizeof buffer, stdin);
 
-        if (sscanf(buffer, "%d", &choice) == 1 && choice >= 1 && choice <= 3)
+        if (sscanf(buffer, "%d %n", &choice, &bytes_read) == 1 && buffer[bytes_read] == '\0' && choice >= 1 && choice <= 3)
             return choice;
 
         last_invalid = true;
