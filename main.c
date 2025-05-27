@@ -81,6 +81,8 @@ enum turn run_game_loop(struct game *game) {
             return winner_;
         }
     }
+
+    return NONE;
 }
 
 int main(void) {
@@ -89,8 +91,6 @@ int main(void) {
     atexit(dump_on_exit);
 
     init_game(&game);
-
-    bool last_invalid = false;
 
     leaderboard_file = fopen("leaderboard.txt", "r+");
     if (leaderboard_file == NULL) {
@@ -124,7 +124,8 @@ int main(void) {
             printf("Enter Choice: ");
 
             fgets(buffer, sizeof buffer, stdin);
-        } while (sscanf(buffer, "%d", &choice) < 1);
+        } while (sscanf(buffer, "%d", &choice) < 1 || choice < 1 || choice > 3);
+
         switch (choice) {
         case 1:
             enum turn winner = run_game_loop(&game);
