@@ -64,11 +64,76 @@ void print_game(struct game *b) {
     }
 }
 
+int execute_move_(
+    struct game *game, struct move *move, int min_steps, int max_steps, char *own, char piece, bool promoted, int index
+) {
+    if (index >= move->length) return 0;
+
+    int cur_pos = move->positions[index - 1];
+    int next_pos = move->positions[index];
+
+    int direction;
+    if ((next_pos - cur_pos) % 7 == 0) {
+        // northeast direction
+        direction = 7;
+    } else if ((next_pos - cur_pos) % 9 == 0) {
+        // northwest direction
+        direction = 9;
+    } else {
+        return -1;
+    }
+
+    int steps = (next_pos - cur_pos) / direction;
+    if (steps < 0) {
+        steps = -steps;
+        direction = -direction;
+    }
+
+    if (steps < min_steps || steps > max_steps) return -1;
+
+    if (!promoted && game->turn == WHITE && direction < 0 &&
+        move->type != CAPTURE)
+        return -1;
+    if (!promoted && game->turn == BLACK && direction > 0 &&
+        move->type != CAPTURE)
+        return -1;
+
+    bool can_capture = move->type == CAPTURE;
+    for (int test_pos = cur_pos + direction; test_pos != next_pos;
+         test_pos += direction) {
+        if (game->board[test_pos] == ' ') continue;
+        if (strchr(own, game->board[test_pos]) != NULL) return -1;
+        if (!can_capture) return -1;
+
+        can_capture = false;
+    }
+
+    if (execute_move_(game, move, min_steps, max_steps, own, piece, promoted, index + 1) < 0) return -1;
+
+    game->board[cur_pos] = ' ';
+    for (cur_pos += direction; cur_pos != next_pos; cur_pos += direction) {
+        game->board[cur_pos] = ' ';
+    }
+
+    if (index < move->length - 1) return 0;
+
+    game->board[cur_pos] = piece;
+    if (piece == 'w' && (cur_pos >= 56 && cur_pos < 64)) {
+        game->board[cur_pos] = 'W';
+    } else if (piece == 'b' && (cur_pos >= 0 && cur_pos < 8)) {
+        game->board[cur_pos] = 'B';
+    }
+
+    game->turn = game->turn == WHITE ? BLACK : WHITE;
+
+    return 0;
+}
+
 int execute_move(struct game *game, struct move *move) {
-    int cur_pos = move->positions[0];
     char piece = game->board[move->positions[0]];
 
     char *own = game->turn == WHITE ? "wW" : "bB";
+
     if (strchr(own, piece) == NULL) return -1;
 
     bool promoted = strchr("WB", piece) != NULL;
@@ -81,65 +146,11 @@ int execute_move(struct game *game, struct move *move) {
         max_steps = 2;
     }
 
-    if (strchr("BW", piece) != NULL) {
+    if (promoted) {
         max_steps = 8;
     }
 
-    for (int i = 1; i < move->length; ++i) {
-        int next_pos = move->positions[i];
-
-        if (game->board[next_pos] != ' ') {
-            return -1;
-        }
-
-        int direction;
-        if ((next_pos - cur_pos) % 7 == 0) {
-            // northeast direction
-            direction = 7;
-        } else if ((next_pos - cur_pos) % 9 == 0) {
-            // northwest direction
-            direction = 9;
-        } else {
-            return -1;
-        }
-
-        int steps = (next_pos - cur_pos) / direction;
-        if (steps < 0) {
-            steps = -steps;
-            direction = -direction;
-        }
-
-        if (!promoted && game->turn == WHITE && direction < 0 &&
-            move->type != CAPTURE)
-            return -1;
-        if (!promoted && game->turn == BLACK && direction > 0 &&
-            move->type != CAPTURE)
-            return -1;
-
-        if (steps < min_steps || steps > max_steps) return -1;
-
-        game->board[cur_pos] = ' ';
-        for (cur_pos += direction; cur_pos != next_pos; cur_pos += direction) {
-            if (move->type != CAPTURE && game->board[cur_pos] != ' ') break;
-            game->board[cur_pos] = ' ';
-        }
-
-        if (cur_pos != next_pos) return -1;
-
-        cur_pos = next_pos;
-    }
-
-    game->board[cur_pos] = piece;
-
-    if (game->turn == WHITE && (cur_pos >= 56 && cur_pos < 64)) {
-        game->board[cur_pos] = 'W';
-    } else if (game->turn == BLACK && (cur_pos >= 0 && cur_pos < 8)) {
-        game->board[cur_pos] = 'B';
-    }
-
-    game->turn = game->turn == WHITE ? BLACK : WHITE;
-
-    return 0;
+    return execute_move_(game, move, min_steps, max_steps, own, piece, promoted, 1);
 }
 
 int execute_move_str(struct game *game, char *move) {
