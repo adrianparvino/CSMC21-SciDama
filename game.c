@@ -107,6 +107,7 @@ int execute_move_(
 
         can_capture = false;
     }
+    if (game->board[next_pos] != ' ') return -1;
 
     if (execute_move_(game, move, min_steps, max_steps, own, piece, promoted, index + 1) < 0) return -1;
 
